@@ -1,0 +1,33 @@
+import re
+import sys
+
+def extract_comments(code):
+    # Define regular expressions for comments
+    comment_pattern = re.compile(r'//.*?$|/\*.*?\*/', re.DOTALL | re.MULTILINE)
+    
+    comments = []
+    
+    # Find all matches for comments
+    for match in comment_pattern.finditer(code):
+        comment = match.group()
+        if comment.startswith('/*'):
+            lines = comment.split('\n')
+            stripped_lines = [line.lstrip() for line in lines]
+            stripped_comment = '\n'.join(stripped_lines)
+            comments.append(stripped_comment)
+        else:
+            comments.append(comment)
+    
+    return comments
+
+if __name__ == "__main__":
+    # Read the input from stdin
+    code = sys.stdin.read()
+    
+    # Extract comments
+    comments = extract_comments(code)
+    
+    # Print comments
+    for comment in comments:
+        print(comment)
+
